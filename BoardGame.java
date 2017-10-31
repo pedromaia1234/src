@@ -77,7 +77,7 @@ public class BoardGame {
 					yFlag = ybandeira2;
 				}
 				if(x == xFlag && y == yFlag)
-					move = "O %s da ilustre casa %s devia tentar ir para outro sitio.";
+					move = "Sou um heroi %s! A bandeira %s e nossa! Vitoria gloriosa!	";
 				else {
 		
 				}
@@ -102,27 +102,47 @@ public class BoardGame {
 		
 		case Soldier.NORTE:
 			y+=1;
-			
+			break;
 		case Soldier.SUL:
 			y-=1;
-			
+			break;
 		case Soldier.OESTE:
 			x-=1;
-			
+			break;
 		case Soldier.ESTE:
 			x+=1;
+			break;
 		}
-		String result=possoMover(b,x,y);
+		
+		b.Walk(direct);
+		String result = "";
+		boolean doesColideWithFlag = coolidecombandeira(b);
+		
+		if(doesColideWithFlag) {
+		
+			result = "Sou um heroi "+ b.getTeam()+"! A bandeira " + getOtherTeam(b.getTeam()) +" e nossa! Vitoria gloriosa!";
+			
+		}
+		
+		
+		return result;
+		
+		/*String result=possoMover(b,x,y);
 		if (!result.equals("O %s da iluste casa %s e um cobardolas.") || !result.equals("O %s da ilustre casa %s devia tentar ir para outro sitio.")){
-			b.Walk(direct);}
+			b.Walk(direct);
+			result = "";}
 		if (result.equals("figth")) {
 			Soldier defender=colidecomjogador(x,y);
 			b.attack(defender);
 			boolean isAlive=b.isAlive();
 			boolean isTeamAlive=true;
-			if (isAlive) {
+		if (isAlive) {
 				if (b.getTeam().equals(team1)) {
 					if (!knight2.isAlive() && !swordman2.isAlive() && !lancer2.isAlive()) {
+						
+						result = "Sou um heroi %s! A bandeira %s e nossa! Vitoria gloriosa!";
+					}
+					else if ((knight1.getxSol()==xbandeira2 && knight1.getySol()==ybandeira2) || (swordman1.getxSol()==xbandeira2 && swordman1.getySol()==ybandeira2) || (lancer1.getxSol()==xbandeira2 && lancer1.getySol()==ybandeira2)) {
 						
 						result = "Sou um heroi %s! A bandeira %s e nossa! Vitoria gloriosa!";
 					}
@@ -135,7 +155,10 @@ public class BoardGame {
 					if (!knight1.isAlive() && !swordman1.isAlive() && !lancer1.isAlive()) {
 						
 						result = "Sou um heroi %s! A bandeira %s e nossa! Vitoria gloriosa!";
-					}
+					} 
+					else if (knight2.getxSol()==xbandeira1 && knight2.getySol()==ybandeira1 || swordman2.getxSol()==xbandeira1 && swordman2.getySol()==ybandeira1 || lancer2.getxSol()==xbandeira1 && lancer2.getySol()==ybandeira1) {
+						
+						result = "Sou um heroi %s! A bandeira %s e nossa! Vitoria gloriosa!";}
 					else {
 						
 						result ="Muhahah, sou um %s! Sou invencivel! Nenhum %s me faz frente!";
@@ -176,6 +199,23 @@ public class BoardGame {
 				result = String.format(result,b.getClassName(),b.getTeam());
 				break;
 			case "Sou um heroi %s! A bandeira %s e nossa! Vitoria gloriosa!":
+				if (b.getTeam().equals(team1)){
+						if (!knight2.isAlive() && !swordman2.isAlive() && !lancer2.isAlive()) {
+					
+					result = String.format(result,team1, team2);
+				}
+						else if ((knight1.getxSol()==xbandeira2 && knight1.getySol()==ybandeira2) || (swordman1.getxSol()==xbandeira2 && swordman1.getySol()==ybandeira2) || (lancer1.getxSol()==xbandeira2 && lancer1.getySol()==ybandeira2)) {
+							result =String.format(result,team1,team2);
+									}
+						}
+				else {if (!knight1.isAlive() && !swordman1.isAlive() && !lancer1.isAlive()) {
+					
+					result = String.format(result, team2,team1);
+				}
+				else if (knight2.getxSol()==xbandeira1 && knight2.getySol()==ybandeira1 || swordman2.getxSol()==xbandeira1 && swordman2.getySol()==ybandeira1 || lancer2.getxSol()==xbandeira1 && lancer2.getySol()==ybandeira1) {
+					result=String.format(result,team2,team1);
+							}
+				}
 				
 			case "Muhahah, sou um %s! Sou invencivel! Nenhum %s me faz frente!":
 				result = String.format(result,b.getTeam(),b.getClassName());
@@ -183,7 +223,31 @@ public class BoardGame {
 				
 			
 			}
+			return result; */
 				
+	}
+	
+	private String getOtherTeam(String team) {
+		String result;
+		if(team.equals(team1))
+			result=team2;
+		else
+			result = team1;
+		return result;
+			
+	}
+	
+	private boolean coolidecombandeira (Soldier b) {
+		boolean result = false;
+		if(b.getTeam().equals(team1)) {
+			if(b.getxSol() == xbandeira2 && b.getySol() == ybandeira2)
+				result = true;
+		}
+		else {
+			if(b.getxSol() == xbandeira1 && b.getySol() == ybandeira1)
+				result = true;
+		}	
+			return result;
 	}
 	
 	// metodos publicos

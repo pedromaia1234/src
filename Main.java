@@ -70,7 +70,6 @@ public class Main {
 			System.out.print(team +"> ");
 			
 			op=in.next().toLowerCase();
-		
 		switch (op) {
 		
 		case SAI:
@@ -115,6 +114,7 @@ public class Main {
 		int xbandeira1;
 		int xbandeira2;
 		int ybandeira2;
+		COUNTERMENU=0;
 		xmap=in.nextInt();  // le o x do mapa
 		ymap=in.nextInt(); // le o y do mapa
 		in.nextLine();
@@ -190,44 +190,64 @@ public class Main {
 		int counter=0;
 		if (COUNTERMENU>0) {
 			if (COUNTERMENU %2 ==0) {
-				
-			
-			direction = in.next();
-			
 			while (counter<3) {
+				
+				direction = in.next();
 				
 				switch (direction) {
 				
 				case NORTE:
-					
+					b.Walk(b.getKnight2(), Soldier.NORTE);
+					System.out.println(b.getnameteam2()+" " +"cavaleiro(" + b.getKnight2().isVivo() +") " + b.getKnight2().getxSol() + " " + b.getKnight2().getySol());
+					break;
 			
 					
 				case SUL:
+					b.Walk(b.getKnight2(), Soldier.SUL);
+					break;
 					
 				case OESTE:
+					b.Walk(b.getKnight2(), Soldier.OESTE);
+					break;
 					
 				case ESTE:
+					b.Walk(b.getKnight2(), Soldier.ESTE);
+					break;
 				}
+			
+				COUNTERMENU++;
+			counter++;
 			}
 			
 			}
 			else {
 				
 				while (counter<3) {
+
+					direction = in.next();
 					
 					switch (direction) {
 					
 					case NORTE:
-				
+						String output = b.Walk(b.getKnight1(), Soldier.NORTE);
+						System.out.println(b.getnameteam1()+" " +"cavaleiro(" + b.getKnight1().isVivo() +") " + b.getKnight1().getxSol() + " " + b.getKnight1().getySol());
+						if(!output.equals(""))
+							System.out.println(output);
+						break;
 						
 					case SUL:
-						
+						b.Walk(b.getKnight1(), Soldier.SUL);
+						break;
 					case OESTE:
-						
+						b.Walk(b.getKnight1(), Soldier.OESTE);
+						break;
 					case ESTE:
+						b.Walk(b.getKnight1(), Soldier.ESTE);
+						break;
 					}
-				}
-				
+				COUNTERMENU++;
+				counter++;
+				}	
 				
 			}
 		}

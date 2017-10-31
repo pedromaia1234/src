@@ -46,15 +46,16 @@ public class Soldier {
 		
 		case NORTE:
 			ySol+=1;
-			
+			break;
 		case SUL:
 			ySol-=1;
-			
+			break;
 		case OESTE:
 			xSol-=1;
-			
+			break;
 		case ESTE:
 			xSol+=1;
+			break;
 		}
 		
 	
