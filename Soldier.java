@@ -42,25 +42,53 @@ public class Soldier {
 	}
 	
 	public void Walk (String direction) {
-		switch (direction) {
+		if (isAlive()) {
 		
-		case NORTE:
-			ySol+=1;
-			break;
-		case SUL:
-			ySol-=1;
-			break;
-		case OESTE:
-			xSol-=1;
-			break;
-		case ESTE:
-			xSol+=1;
-			break;
+			switch (direction) {
+			
+			case NORTE:
+				ySol+=1;
+				break;
+			case SUL:
+				ySol-=1;
+				break;
+			case OESTE:
+				xSol-=1;
+				break;
+			case ESTE:
+				xSol+=1;
+				break;
+			}
 		}
 		
 	
 		
 	}
+	
+	public void Walkback (String direction) {
+		if (isAlive()) {
+		
+			switch (direction) {
+			
+			case NORTE:
+				ySol-=1;
+				break;
+			case SUL:
+				ySol+=1;
+				break;
+			case OESTE:
+				xSol+=1;
+				break;
+			case ESTE:
+				xSol-=1;
+				break;
+			}
+		}
+		
+	
+		
+	}
+	
 	public void attack(Soldier b) {
 		boolean morreu=false;
 		
@@ -140,7 +168,7 @@ public class Soldier {
 		return xSol;
 	}
 
-
+   
 
 	public int getySol() {
 		return ySol;
