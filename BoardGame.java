@@ -13,7 +13,7 @@ public class BoardGame {
 	private Soldier lancer1;
 	private Soldier lancer2;
 	private boolean jogoacaba;
-	public int COUNTERMENU;
+	private int COUNTERMENU;
 	
 	public int returncounter () {
 		return COUNTERMENU;
@@ -22,6 +22,11 @@ public class BoardGame {
 	
 	public void incCOUNTER() {
 		COUNTERMENU++;
+	}
+	
+	public void setCounter(int counter) {
+		
+		COUNTERMENU=counter;
 	}
 
 	public BoardGame(int xmap, int ymap, String team1, String team2, int xbandeira1, int ybandeira1, int xbandeira2,int ybandeira2) {
@@ -66,6 +71,8 @@ public class BoardGame {
 
 
 	public String Walk(Soldier b, String direct) {
+		String result = "";
+		if  (COUNTERMENU>0) {
 		int x = b.getxSol();
 		int y = b.getySol();
 		x = b.getxSol();
@@ -85,14 +92,18 @@ public class BoardGame {
 			x += 1;
 			break;
 		}
-
+        
 		b.Walk(direct);
 
-		String result = "";
+		
 		boolean doesColideWithFlag2 = team1coolidecombandeira2(b);
 		boolean doesColideWithFlag1 = team2coolidecombandeira1(b);
-		boolean team1ColideWithFlag1 = team1coolidecombandeira1(b, direct);
-		boolean team2ColideWithFlag2 = team2coolidecombandeira2(b, direct);
+		boolean cavaleiro1ColideWithFlag1 = cavaleiro1coolidecombandeira1(b, direct);
+		boolean cavaleiro2ColideWithFlag2 = cavaleiro2coolidecombandeira2(b, direct);
+		boolean lancer1coolidecombandeira1=lancer1coolidecombandeira1(b,direct);
+		boolean lancer2coolidecombandeira2=lancer2coolidecombandeira2(b,direct);
+		boolean espadachim1coolidecombandeira1=espadachim1coolidecombandeira1(b,direct);
+		boolean espadachim2coolidecombandeira2=espadachim2coolidecombandeira2(b,direct);
 		boolean cavaleiro1morto = cavaleiro1Morto(b);
 		boolean cavaleiro2morto = cavaleiro2Morto(b);
 		boolean espadachim1Morto = espadachim1Morto(b);
@@ -199,11 +210,27 @@ public class BoardGame {
 			result = "O espadachim da ilustre casa de " + b.getTeam() + " devia tentar ir para outro sitio.";
 		}
 		
-		if (team1ColideWithFlag1) {
+		if (cavaleiro1ColideWithFlag1) {
 			result = "O cavaleiro da ilustre casa de " + b.getTeam() + " devia tentar ir para outro sitio.";
 		}
+		
+		if (lancer1coolidecombandeira1) {
+			result = "O lanceiro da ilustre casa de " + b.getTeam() + " devia tentar ir para outro sitio.";
+		}
+		
+		if (lancer2coolidecombandeira2) {
+			result = "O lanceiro da ilustre casa de " + b.getTeam() + " devia tentar ir para outro sitio.";
+		}
+		
+		if (espadachim1coolidecombandeira1) {
+			result = "O espadachim da ilustre casa de " + b.getTeam() + " devia tentar ir para outro sitio.";
+		}
+		if (espadachim2coolidecombandeira2) {
+			result = "O espadachim da ilustre casa de " + b.getTeam() + " devia tentar ir para outro sitio.";
+		}
+		
 
-		if (team2ColideWithFlag2) {
+		if (cavaleiro2ColideWithFlag2) {
 			result = "O cavaleiro da ilustre casa de " + b.getTeam() + " devia tentar ir para outro sitio.";
 		}
 
@@ -367,17 +394,17 @@ public class BoardGame {
 
 		if (equipa1morta) {
 
-			result = "Sou um heroi " + getOtherTeam(b.getTeam()) + "! A bandeira " + b.getTeam() +" e nossa! Vitoria gloriosa!";
+			result += "\nSou um heroi " + b.getTeam() + "! A bandeira " + getOtherTeam(b.getTeam()) +" e nossa! Vitoria gloriosa!";
 			
 		}
 		
 		if (equipa2morta) {
 
-			result = "Sou um heroi " + getOtherTeam(b.getTeam()) + "! A bandeira " + b.getTeam() +" e nossa! Vitoria gloriosa!";
+			result += "\nSou um heroi " + b.getTeam() + "! A bandeira " + getOtherTeam(b.getTeam()) +" e nossa! Vitoria gloriosa!";
 			
 		}
 
-		else {}
+		else {}}
 
 		return result;
 	}
@@ -400,10 +427,11 @@ public class BoardGame {
 	private boolean team1coolidecombandeira2(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team1)) {
-			if (b.getxSol() == xbandeira2 && b.getySol() == ybandeira2)
+			if (b.getxSol() == xbandeira2 && b.getySol() == ybandeira2) {
 				result = true;
+			COUNTERMENU=-1;
 			
-			jogoacaba = true;
+			jogoacaba = true;}
 			
 			
 
@@ -416,9 +444,10 @@ public class BoardGame {
 		boolean result = false;
 
 		if (b.getTeam().equals(team2)) {
-			if (b.getxSol() == xbandeira1 && b.getySol() == ybandeira1)
+			if (b.getxSol() == xbandeira1 && b.getySol() == ybandeira1) {
 				result = true;
 			jogoacaba = true;
+			COUNTERMENU=-1;}
 
 		}
 
@@ -426,9 +455,9 @@ public class BoardGame {
 
 	}
 	
-	private boolean team1coolidecombandeira1(Soldier b, String direct) {
+	private boolean cavaleiro1coolidecombandeira1(Soldier b, String direct) {
 		boolean result = false;
-		if (b.getTeam().equals(team1) && (b.getxSol() == xbandeira1 && b.getySol() == ybandeira1)) {
+		if (b.getTeam().equals(team1) && (knight1.getxSol() == xbandeira1 && knight1.getySol() == ybandeira1) && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			b.Walkback(direct);
 
@@ -436,22 +465,69 @@ public class BoardGame {
 
 		return result;
 	}
-
-	private boolean team2coolidecombandeira2(Soldier b, String direct) {
+	
+	private boolean cavaleiro2coolidecombandeira2(Soldier b, String direct) {
 		boolean result = false;
-		if ((b.getTeam().equals(team2)) && (b.getxSol() == xbandeira2 && b.getySol() == ybandeira2)) {
+		if (b.getTeam().equals(team2) && (knight2.getxSol() == xbandeira2 && knight2.getySol() == ybandeira2) && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			b.Walkback(direct);
 
 		}
+
 		return result;
 	}
+	
+	private boolean lancer1coolidecombandeira1(Soldier b, String direct) {
+		boolean result = false;
+		if (b.getTeam().equals(team1) && (lancer1.getxSol() == xbandeira1 && lancer1.getySol() == ybandeira1) && b.getClassplayer() == Soldier.LANCER) {
+			result = true;
+			b.Walkback(direct);
+
+		}
+
+		return result;
+	}
+	
+	private boolean lancer2coolidecombandeira2(Soldier b, String direct) {
+		boolean result = false;
+		if (b.getTeam().equals(team2) && (lancer2.getxSol() == xbandeira2 && lancer2.getySol() == ybandeira2) && b.getClassplayer() == Soldier.LANCER) {
+			result = true;
+			b.Walkback(direct);
+
+		}
+
+		return result;
+	}
+	
+	private boolean espadachim1coolidecombandeira1(Soldier b, String direct) {
+		boolean result = false;
+		if (b.getTeam().equals(team1) && (swordman1.getxSol() == xbandeira1 && swordman1.getySol() == ybandeira1) && b.getClassplayer() == Soldier.SWORDMAN) {
+			result = true;
+			b.Walkback(direct);
+
+		}
+
+		return result;
+	}
+	
+	private boolean espadachim2coolidecombandeira2(Soldier b, String direct) {
+		boolean result = false;
+		if (b.getTeam().equals(team2) && (swordman2.getxSol() == xbandeira2 && swordman2.getySol() == ybandeira2) && b.getClassplayer() == Soldier.SWORDMAN) {
+			result = true;
+			b.Walkback(direct);
+
+		}
+
+		return result;
+	}
+	
+
 
 	private boolean cavaleiro1passamapa(Soldier b, String direct) {
 		boolean result = false;
 		if (b.getTeam().equals(team1)
 				&& ((knight1.getxSol() > xmap || knight1.getxSol() < 1 || knight1.getySol() > ymap)
-						|| knight1.getySol() < 1)) {
+						|| knight1.getySol() < 1) && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			b.Walkback(direct);
 
@@ -463,7 +539,7 @@ public class BoardGame {
 		boolean result = false;
 		if (b.getTeam().equals(team2)
 				&& ((knight2.getxSol() > xmap || knight2.getxSol() < 1 || knight2.getySol() > ymap)
-						|| knight2.getySol() < 1)) {
+						|| knight2.getySol() < 1) && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			b.Walkback(direct);
 
@@ -475,7 +551,7 @@ public class BoardGame {
 		boolean result = false;
 		if (b.getTeam().equals(team1)
 				&& ((lancer1.getxSol() > xmap || lancer1.getxSol() < 1 || lancer1.getySol() > ymap)
-						|| lancer1.getySol() < 1)) {
+						|| lancer1.getySol() < 1) && b.getClassplayer() == Soldier.LANCER) {
 			result = true;
 			b.Walkback(direct);
 
@@ -487,7 +563,7 @@ public class BoardGame {
 		boolean result = false;
 		if (b.getTeam().equals(team2)
 				&& ((lancer2.getxSol() > xmap || lancer2.getxSol() < 1 || lancer2.getySol() > ymap)
-						|| lancer2.getySol() < 1)) {
+						|| lancer2.getySol() < 1) && b.getClassplayer() == Soldier.LANCER) {
 			result = true;
 			b.Walkback(direct);
 
@@ -499,7 +575,7 @@ public class BoardGame {
 		boolean result = false;
 		if (b.getTeam().equals(team1)
 				&& ((swordman1.getxSol() > xmap || swordman1.getxSol() < 1 || swordman1.getySol() > ymap)
-						|| swordman1.getySol() < 1)) {
+						|| swordman1.getySol() < 1) && b.getClassplayer() == Soldier.SWORDMAN) {
 			result = true;
 			b.Walkback(direct);
 
@@ -507,11 +583,20 @@ public class BoardGame {
 		return result;
 	}
 
+	
+	public boolean isfinish() {
+		return jogoacaba;
+		
+	}
+	
+	
+	
+	
 	private boolean espadachim2passamapa(Soldier b, String direct) {
 		boolean result = false;
 		if (b.getTeam().equals(team2)
 				&& ((swordman2.getxSol() > xmap || swordman2.getxSol() < 1 || swordman2.getySol() > ymap)
-						|| swordman2.getySol() < 1)) {
+						|| swordman2.getySol() < 1) && b.getClassplayer() == Soldier.SWORDMAN) {
 			result = true;
 			b.Walkback(direct);
 
@@ -583,7 +668,7 @@ public class BoardGame {
 		boolean result = false;
 		if (knight1.isAlive() == false && lancer1.isAlive() == false && swordman1.isAlive() == false) {
 
-			COUNTERMENU=0;
+			COUNTERMENU=-1;
 			result = true;
 			jogoacaba=true;
 		}
@@ -593,7 +678,7 @@ public class BoardGame {
 	private boolean equipa2morta(Soldier b) {
 		boolean result = false;
 		if (knight2.isAlive() == false && lancer2.isAlive() == false && swordman2.isAlive() == false) {
-			COUNTERMENU=0;
+			COUNTERMENU=-1;
 			result = true;
 			jogoacaba=true;
 		}
@@ -603,7 +688,7 @@ public class BoardGame {
 	private boolean cavaleiro1colidecomlancer1(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team1)) && knight1.getxSol() == lancer1.getxSol()
-				&& knight1.getySol() == lancer1.getySol() && lancer1.isAlive() && knight1.isAlive()) {
+				&& knight1.getySol() == lancer1.getySol() && lancer1.isAlive() && knight1.isAlive() &&  b.getClassplayer() == Soldier.KNIGHT)  {
 			result=true;
 			b.Walkback(direct);
 			
@@ -614,7 +699,7 @@ public class BoardGame {
 	private boolean cavaleiro1colidecomespadachim1(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team1)) && knight1.getxSol() == swordman1.getxSol()
-				&& knight1.getySol() == swordman1.getySol() && swordman1.isAlive() && knight1.isAlive()) {
+				&& knight1.getySol() == swordman1.getySol() && swordman1.isAlive() && knight1.isAlive() && b.getClassplayer() == Soldier.KNIGHT) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -625,7 +710,7 @@ public class BoardGame {
 	private boolean lancer1colidecomcavaleiro1(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team1)) && lancer1.getxSol() == knight1.getxSol()
-				&& lancer1.getySol() == knight1.getySol() && knight1.isAlive() && lancer1.isAlive()) {
+				&& lancer1.getySol() == knight1.getySol() && knight1.isAlive() && lancer1.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -636,7 +721,7 @@ public class BoardGame {
 	private boolean lancer1colidecomespadachim1(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team1)) && lancer1.getxSol() == swordman1.getxSol()
-				&& lancer1.getySol() == swordman1.getySol() && swordman1.isAlive() && lancer1.isAlive()) {
+				&& lancer1.getySol() == swordman1.getySol() && swordman1.isAlive() && lancer1.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -647,7 +732,7 @@ public class BoardGame {
 	private boolean espadachim1colidecomcavaleiro1(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team1)) && swordman1.getxSol() == knight1.getxSol()
-				&& swordman1.getySol() == knight1.getySol() && knight1.isAlive() && swordman1.isAlive()) {
+				&& swordman1.getySol() == knight1.getySol() && knight1.isAlive() && swordman1.isAlive() && b.getClassplayer() == Soldier.SWORDMAN){
 			result=true;
 			b.Walkback(direct);
 			
@@ -658,7 +743,7 @@ public class BoardGame {
 	private boolean espadachim1colidecomlancer1(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team1)) && swordman1.getxSol() == lancer1.getxSol()
-				&& swordman1.getySol() == lancer1.getySol() && lancer1.isAlive()&& swordman1.isAlive()) {
+				&& swordman1.getySol() == lancer1.getySol() && lancer1.isAlive()&& swordman1.isAlive() && b.getClassplayer() == Soldier.SWORDMAN) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -669,7 +754,7 @@ public class BoardGame {
 	private boolean cavaleiro2colidecomlancer2(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team2)) && knight2.getxSol() == lancer2.getxSol()
-				&& knight2.getySol() == lancer2.getySol() && lancer2.isAlive() && knight2.isAlive()) {
+				&& knight2.getySol() == lancer2.getySol() && lancer2.isAlive() && knight2.isAlive() && b.getClassplayer() == Soldier.KNIGHT) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -680,7 +765,7 @@ public class BoardGame {
 	private boolean cavaleiro2colidecomespadachim2(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team2)) && knight2.getxSol() == swordman2.getxSol()
-				&& knight2.getySol() == swordman2.getySol() && swordman2.isAlive() && knight2.isAlive()) {
+				&& knight2.getySol() == swordman2.getySol() && swordman2.isAlive() && knight2.isAlive() && b.getClassplayer() == Soldier.KNIGHT) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -691,7 +776,7 @@ public class BoardGame {
 	private boolean lancer2colidecomcavaleiro2(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team2)) && lancer2.getxSol() == knight2.getxSol()
-				&& lancer2.getySol() == knight2.getySol() && knight2.isAlive() && lancer2.isAlive()) {
+				&& lancer2.getySol() == knight2.getySol() && knight2.isAlive() && lancer2.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -702,7 +787,7 @@ public class BoardGame {
 	private boolean lancer2colidecomespadachim2(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team2)) && lancer2.getxSol() == swordman2.getxSol()
-				&& lancer2.getySol() == swordman2.getySol() && swordman2.isAlive() && lancer2.isAlive()) {
+				&& lancer2.getySol() == swordman2.getySol() && swordman2.isAlive() && lancer2.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -713,7 +798,7 @@ public class BoardGame {
 	private boolean espadachim2colidecomcavaleiro2(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team2)) && swordman2.getxSol() == knight2.getxSol()
-				&& swordman2.getySol() == knight2.getySol() && knight2.isAlive() && swordman2.isAlive()) {
+				&& swordman2.getySol() == knight2.getySol() && knight2.isAlive() && swordman2.isAlive() && b.getClassplayer() == Soldier.SWORDMAN) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -724,7 +809,7 @@ public class BoardGame {
 	private boolean espadachim2colidecomlancer2(Soldier b,String direct) {
 		boolean result = false;
 		if ((b.getTeam().equals(team2)) && swordman2.getxSol() == lancer2.getxSol()
-				&& swordman2.getySol() == lancer2.getySol() && lancer2.isAlive() && swordman2.isAlive()) {
+				&& swordman2.getySol() == lancer2.getySol() && lancer2.isAlive() && swordman2.isAlive() && b.getClassplayer() == Soldier.SWORDMAN) {
 			result=true;
 			b.Walkback(direct);
 			
@@ -741,7 +826,7 @@ public class BoardGame {
 	private boolean cavaleiro1vslancer2(Soldier b) {
 		boolean result = false;
 		if ((b.getTeam().equals(team1)) && knight1.getxSol() == lancer2.getxSol()
-				&& knight1.getySol() == lancer2.getySol() && knight1.isAlive()) {
+				&& knight1.getySol() == lancer2.getySol() && knight1.isAlive() && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			knight1.kill();
 
@@ -752,7 +837,7 @@ public class BoardGame {
 	private boolean cavaleiro1vscavaleiror2(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team1) && knight1.getxSol() == knight2.getxSol()
-				&& knight1.getySol() == knight2.getySol() && knight1.isAlive()) {
+				&& knight1.getySol() == knight2.getySol() && knight1.isAlive() && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			knight2.kill();
 
@@ -763,7 +848,7 @@ public class BoardGame {
 	private boolean cavaleiro1vsespadachim2(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team1) && knight1.getxSol() == swordman2.getxSol()
-				&& knight1.getySol() == swordman2.getySol() && knight1.isAlive()) {
+				&& knight1.getySol() == swordman2.getySol() && knight1.isAlive() && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			swordman2.kill();
 
@@ -774,7 +859,7 @@ public class BoardGame {
 	private boolean cavaleiro2vslancer1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && knight2.getxSol() == lancer1.getxSol()
-				&& knight2.getySol() == lancer1.getySol() && knight2.isAlive()) {
+				&& knight2.getySol() == lancer1.getySol() && knight2.isAlive() && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			knight2.kill();
 
@@ -785,7 +870,7 @@ public class BoardGame {
 	private boolean cavaleiro2vscavaleiror1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && knight2.getxSol() == knight1.getxSol()
-				&& knight2.getySol() == knight1.getySol() && knight2.isAlive()) {
+				&& knight2.getySol() == knight1.getySol() && knight2.isAlive() && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			knight1.kill();
 
@@ -796,7 +881,7 @@ public class BoardGame {
 	private boolean cavaleiro2vsespadachim1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && knight2.getxSol() == swordman1.getxSol()
-				&& knight2.getySol() == swordman1.getySol() && knight2.isAlive()) {
+				&& knight2.getySol() == swordman1.getySol() && knight2.isAlive() && b.getClassplayer() == Soldier.KNIGHT) {
 			result = true;
 			swordman1.kill();
 
@@ -807,7 +892,7 @@ public class BoardGame {
 	private boolean lanceiro1vslancer2(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team1) && lancer1.getxSol() == lancer2.getxSol()
-				&& lancer1.getySol() == lancer2.getySol() && lancer1.isAlive()) {
+				&& lancer1.getySol() == lancer2.getySol() && lancer1.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result = true;
 			lancer2.kill();
 		}
@@ -817,7 +902,7 @@ public class BoardGame {
 	private boolean lanceiro1vscavaleiror2(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team1) && lancer1.getxSol() == knight2.getxSol()
-				&& lancer1.getySol() == knight2.getySol() && lancer1.isAlive()) {
+				&& lancer1.getySol() == knight2.getySol() && lancer1.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result = true;
 			knight2.kill();
 		}
@@ -827,7 +912,7 @@ public class BoardGame {
 	private boolean lanceiro1vsespadachim2(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team1) && lancer1.getxSol() == swordman2.getxSol()
-				&& lancer1.getySol() == swordman2.getySol() && lancer1.isAlive()) {
+				&& lancer1.getySol() == swordman2.getySol() && lancer1.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result = true;
 			lancer1.kill();
 
@@ -838,7 +923,7 @@ public class BoardGame {
 	private boolean lanceiro2vslancer1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && lancer2.getxSol() == lancer1.getxSol()
-				&& lancer2.getySol() == lancer1.getySol() && lancer2.isAlive()) {
+				&& lancer2.getySol() == lancer1.getySol() && lancer2.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result = true;
 			lancer1.kill();
 		}
@@ -848,7 +933,7 @@ public class BoardGame {
 	private boolean lanceiro2vscavaleiror1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && lancer2.getxSol() == knight1.getxSol()
-				&& lancer2.getySol() == knight1.getySol() && lancer2.isAlive()) {
+				&& lancer2.getySol() == knight1.getySol() && lancer2.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result = true;
 			knight1.kill();
 		}
@@ -858,7 +943,7 @@ public class BoardGame {
 	private boolean lanceiro2vsespadachim1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && lancer2.getxSol() == swordman1.getxSol()
-				&& lancer2.getySol() == swordman1.getySol() && lancer2.isAlive()) {
+				&& lancer2.getySol() == swordman1.getySol() && lancer2.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result = true;
 			lancer2.kill();
 
@@ -869,7 +954,7 @@ public class BoardGame {
 	private boolean espadachim1vslancer2(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team1) && swordman1.getxSol() == lancer2.getxSol()
-				&& swordman1.getySol() == lancer2.getySol() && swordman1.isAlive()) {
+				&& swordman1.getySol() == lancer2.getySol() && swordman1.isAlive() && b.getClassplayer() == Soldier.SWORDMAN) {
 			result = true;
 			lancer2.kill();
 		}
@@ -879,7 +964,7 @@ public class BoardGame {
 	private boolean espadachim1vscavaleiror2(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team1) && swordman1.getxSol() == knight2.getxSol()
-				&& swordman1.getySol() == knight2.getySol() && swordman1.isAlive()) {
+				&& swordman1.getySol() == knight2.getySol() && swordman1.isAlive() && b.getClassplayer() == Soldier.SWORDMAN) {
 			result = true;
 			swordman1.kill();
 		}
@@ -889,7 +974,7 @@ public class BoardGame {
 	private boolean espadachim1vsespadachim2(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team1) && swordman1.getxSol() == swordman2.getxSol()
-				&& swordman1.getySol() == swordman2.getySol() && swordman1.isAlive() == true) {
+				&& swordman1.getySol() == swordman2.getySol() && swordman1.isAlive() && b.getClassplayer() == Soldier.SWORDMAN) {
 			result = true;
 			swordman2.kill();
 
@@ -900,7 +985,7 @@ public class BoardGame {
 	private boolean espadachim2vslancer1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && swordman2.getxSol() == lancer1.getxSol()
-				&& swordman2.getySol() == lancer1.getySol() && swordman2.isAlive() == true) {
+				&& swordman2.getySol() == lancer1.getySol() && swordman2.isAlive() && b.getClassplayer() == Soldier.SWORDMAN) {
 			result = true;
 			lancer1.kill();
 		}
@@ -910,7 +995,7 @@ public class BoardGame {
 	private boolean espadachim2vscavaleiror1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && swordman2.getxSol() == knight1.getxSol()
-				&& swordman2.getySol() == knight1.getySol() && swordman2.isAlive() == true) {
+				&& swordman2.getySol() == knight1.getySol() && swordman2.isAlive() && b.getClassplayer() == Soldier.SWORDMAN) {
 			result = true;
 			swordman2.kill();
 		}
@@ -920,7 +1005,7 @@ public class BoardGame {
 	private boolean espadachim2vsespadachim1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && swordman2.getxSol() == swordman1.getxSol()
-				&& swordman2.getySol() == swordman1.getySol() && swordman2.isAlive() == true) {
+				&& swordman2.getySol() == swordman1.getySol() && swordman2.isAlive() && b.getClassplayer() == Soldier.SWORDMAN) {
 			result = true;
 			swordman1.kill();
 

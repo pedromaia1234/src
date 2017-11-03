@@ -39,7 +39,7 @@ public class Main {
 		if (b.returncounter()==0) {
 		System.out.println("novo - Novo jogo");
 		System.out.println("ajuda - Mostra a ajuda");
-		System.out.println("sai – Termina a execucao do programa");}
+		System.out.println("sai - Termina a execucao do programa");}
 		else if (b.returncounter()>0) {
 			System.out.println("novo - Novo jogo");
 			System.out.println("mapa - Mostra o mapa do jogo");
@@ -47,7 +47,7 @@ public class Main {
 			System.out.println("espadachim - Move o espadachim");
 			System.out.println("lanceiro - Move o lanceiro");
 			System.out.println("ajuda - Mostra a ajuda");
-			System.out.println("sai – Termina a execucao do programa");}
+			System.out.println("sai - Termina a execucao do programa");}
 			
 
 		}
@@ -60,9 +60,11 @@ public class Main {
 		
 		showmenu(b);
 		
-		String team="";
+		String team;
 		while (!op.equals("sai")) {
+			team = "";
 		if (b.returncounter()>0)
+			
 			if (b.returncounter() %2==0 )
 				team=b.getnameteam2()+" ";
 			else {
@@ -80,6 +82,7 @@ public class Main {
 			break;
 		case NOVO:
 			b=newgame(b,in); 
+			
 			break;
 			
 		case AJUDA:
@@ -87,7 +90,7 @@ public class Main {
 			break;
 			
 		case MAPA:
-			processMap(b);
+		processMap(b);
 			break;
 			
 		case CAVALEIRO:
@@ -116,7 +119,8 @@ public class Main {
 	}}
 	
 	private static BoardGame newgame(BoardGame b , Scanner in) {
-		BoardGame result = null;
+		BoardGame result = b;
+		
 		int xmap;
 		int ymap;
 		String team1;
@@ -125,6 +129,7 @@ public class Main {
 		int xbandeira1;
 		int xbandeira2;
 		int ybandeira2;
+		b.setCounter(0);
 		xmap=in.nextInt();
 		ymap=in.nextInt();
 		in.nextLine();
@@ -143,22 +148,22 @@ public class Main {
 		else {
 			if (xbandeira1>=xmap || xbandeira1<2 || ybandeira1>=ymap || ybandeira1<2) {
 				System.out.println(team1 + " bandeira em posicao invalida " + xbandeira1 + " "+ ybandeira1+ ".");
-				success=false;}
-
-			if(xbandeira2>=xmap || xbandeira2<2 || ybandeira2>=ymap || ybandeira2<2) {
-				System.out.println(team2 + " bandeira em posicao invalida " + xbandeira2 + " "+ ybandeira2+ ".");
 				success=false;
-			}
+				if(xbandeira2>=xmap || xbandeira2<2 || ybandeira2>=ymap || ybandeira2<2) {
+					System.out.println(team2 + " bandeira em posicao invalida " + xbandeira2 + " "+ ybandeira2+ ".");
+					success=false;
+				}}
+
+			
 			else if (team1.equals(team2) && success) {
 				System.out.println("As equipas nao podem ter o mesmo nome.");
 				success=false;}
-			// as bandeira tem de estar a uma distancia superior a 5
+			
 			else if ((Math.abs(xbandeira1-xbandeira2)+Math.abs(ybandeira1-ybandeira2))<=5 && success) {
 				System.out.println(team2 + " bandeira em posicao invalida " + xbandeira2 + " "+ ybandeira2+ ".");
 				success=false;}
 			else {
 				result = new BoardGame (xmap,ymap,team1,team2, xbandeira1, ybandeira1, xbandeira2, ybandeira2);
-				System.out.println(b.COUNTERMENU + "");
 				System.out.println ("Jogo iniciado, comeca a equipa " + result.getnameteam1()+".");
 
 			}
@@ -174,7 +179,6 @@ public class Main {
 	
 	private static void processMap(BoardGame b) {
 		if (b.returncounter()==0) {
-			System.out.println(b.COUNTERMENU + "");
 			System.out.println("Comando inactivo.");}
 			else {
 			System.out.println(b.getxmap()+" " + b.getymap());
@@ -201,6 +205,7 @@ public class Main {
 				
 				direction = in.next();
 				
+				if (!b.isfinish()) {
 				switch (direction) {
 				
 				case NORTE:
@@ -236,11 +241,11 @@ public class Main {
 					
 					break;
 					
-				}
+				}}
 			
-				b.incCOUNTER();
+				
 			counter++;
-			}
+			}b.incCOUNTER();
 			
 			}
 			else {
@@ -248,7 +253,7 @@ public class Main {
 				while (counter<3) {
 
 					direction = in.next();
-					
+					if (!b.isfinish()) {
 					switch (direction) {
 					
 					case NORTE:
@@ -280,14 +285,14 @@ public class Main {
 						System.out.println(b.getnameteam1()+" " +"cavaleiro(" + b.getKnight1().isVivo() +") " + b.getKnight1().getxSol() + " " + b.getKnight1().getySol());
 						
 						break;
-					}
-				b.incCOUNTER();
+					}}
+				
 				counter++;
-				}	
+				}b.incCOUNTER();	
 				
 			}
 		}
-		else {System.out.println(b.COUNTERMENU + "");
+		else {
 			System.out.println("Comando inactivo.");}
 	}
 	
@@ -398,7 +403,7 @@ public class Main {
 					String output =b.Walk(b.getLancer2(), Soldier.NORTE);
 					if(!output.equals(""))
 						System.out.println(output);
-					System.out.println(b.getnameteam2()+" " +"lanceiro(" + b.getKnight2().isVivo() +") " + b.getLancer2().getxSol() + " " + b.getLancer2().getySol());
+					System.out.println(b.getnameteam2()+" " +"lanceiro(" + b.getLancer2().isVivo() +") " + b.getLancer2().getxSol() + " " + b.getLancer2().getySol());
 					break;
 			
 					
