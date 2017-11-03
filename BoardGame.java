@@ -400,7 +400,7 @@ public class BoardGame {
 		
 		if (equipa2morta) {
 
-			result += "\nSou um heroi " + b.getTeam() + "! A bandeira " + getOtherTeam(b.getTeam()) +" e nossa! Vitoria gloriosa!";
+			result += "\nSou um heroi " + getOtherTeam(b.getTeam()) + "! A bandeira " + b.getTeam() +" e nossa! Vitoria gloriosa!";
 			
 		}
 
