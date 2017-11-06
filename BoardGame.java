@@ -146,9 +146,10 @@ public class BoardGame {
 		boolean lanceiro2passamapa = lanceiro2passamapa(b, direct);
 		boolean espadachim1passamapa = espadachim1passamapa(b, direct);
 		boolean espadachim2passamapa = espadachim2passamapa(b, direct);
-		boolean equipa1morta = equipa1morta(b);
-		boolean equipa2morta = equipa2morta(b);
-
+		boolean team1ajogareteam1morta = team1ajogareteam1morta(b);
+		boolean team2ajogareequipa1morta = team2ajogareequipa1morta(b);
+		boolean team1ajogareequipa2morta = team1ajogareequipa2morta(b);
+		boolean team2ajogareequipa2morta = team2ajogareequipa2morta(b);
 		
 		if (cavaleiro1colidecomlancer1) {
 			
@@ -392,13 +393,25 @@ public class BoardGame {
 					+ " e nossa! Vitoria gloriosa!";
 		}
 
-		if (equipa1morta) {
+		if (team1ajogareteam1morta) {
+
+			result += "\nSou um heroi " + getOtherTeam(b.getTeam()) + "! A bandeira " + b.getTeam() +" e nossa! Vitoria gloriosa!";
+			
+		}
+		
+		if (team2ajogareequipa1morta) {
 
 			result += "\nSou um heroi " + b.getTeam() + "! A bandeira " + getOtherTeam(b.getTeam()) +" e nossa! Vitoria gloriosa!";
 			
 		}
 		
-		if (equipa2morta) {
+		if (team1ajogareequipa2morta) {
+
+			result += "\nSou um heroi " + b.getTeam() + "! A bandeira " + getOtherTeam(b.getTeam()) +" e nossa! Vitoria gloriosa!";
+			
+		}
+		
+		if (team2ajogareequipa2morta) {
 
 			result += "\nSou um heroi " + getOtherTeam(b.getTeam()) + "! A bandeira " + b.getTeam() +" e nossa! Vitoria gloriosa!";
 			
@@ -664,9 +677,10 @@ public class BoardGame {
 		return result;
 	}
 
-	private boolean equipa1morta(Soldier b) {
+	private boolean team1ajogareteam1morta(Soldier b) {
 		boolean result = false;
-		if (knight1.isAlive() == false && lancer1.isAlive() == false && swordman1.isAlive() == false) {
+		if (b.getTeam().equals(team1)
+				&& knight1.isAlive() == false && lancer1.isAlive() == false && swordman1.isAlive() == false) {
 
 			COUNTERMENU=-1;
 			result = true;
@@ -675,9 +689,33 @@ public class BoardGame {
 		return result;
 	}
 	
-	private boolean equipa2morta(Soldier b) {
+	private boolean team2ajogareequipa1morta(Soldier b) {
 		boolean result = false;
-		if (knight2.isAlive() == false && lancer2.isAlive() == false && swordman2.isAlive() == false) {
+		if (b.getTeam().equals(team2)
+				&& knight1.isAlive() == false && lancer1.isAlive() == false && swordman1.isAlive() == false) {
+
+			COUNTERMENU=-1;
+			result = true;
+			jogoacaba=true;
+		}
+		return result;
+	}
+	
+	private boolean team1ajogareequipa2morta(Soldier b) {
+		boolean result = false;
+		if (b.getTeam().equals(team1)
+				&& knight2.isAlive() == false && lancer2.isAlive() == false && swordman2.isAlive() == false) {
+			COUNTERMENU=-1;
+			result = true;
+			jogoacaba=true;
+		}
+		return result;
+	}
+	
+	private boolean team2ajogareequipa2morta(Soldier b) {
+		boolean result = false;
+		if (b.getTeam().equals(team2)
+				&& knight2.isAlive() == false && lancer2.isAlive() == false && swordman2.isAlive() == false) {
 			COUNTERMENU=-1;
 			result = true;
 			jogoacaba=true;
@@ -933,7 +971,7 @@ public class BoardGame {
 	private boolean lanceiro2vscavaleiror1(Soldier b) {
 		boolean result = false;
 		if (b.getTeam().equals(team2) && lancer2.getxSol() == knight1.getxSol()
-				&& lancer2.getySol() == knight1.getySol() && lancer2.isAlive() && b.getClassplayer() == Soldier.LANCER) {
+				&& lancer2.getySol() == knight1.getySol() && lancer2.isAlive() && knight1.isAlive() && b.getClassplayer() == Soldier.LANCER) {
 			result = true;
 			knight1.kill();
 		}

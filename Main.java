@@ -90,7 +90,7 @@ public class Main {
 			break;
 			
 		case MAPA:
-		processMap(b);
+			processMap(b);
 			break;
 			
 		case CAVALEIRO:
@@ -109,6 +109,7 @@ public class Main {
 			
 			
 			default: System.out.println("Opcao inexistente.");
+			in.nextLine();
 				
 			
 			
@@ -293,7 +294,8 @@ public class Main {
 			}
 		}
 		else {
-			System.out.println("Comando inactivo.");}
+			System.out.println("Comando inactivo.");
+			in.nextLine();}
 	}
 	
 	
@@ -384,7 +386,8 @@ public class Main {
 				
 			}
 		}
-		else {System.out.println("Comando inactivo.");}
+		else {System.out.println("Comando inactivo.");
+			in.nextLine();}
 	}
 	
 	
@@ -476,7 +479,8 @@ public class Main {
 				
 			}
 		}
-		else {System.out.println("Comando inactivo.");}
+		else {System.out.println("Comando inactivo.");
+		in.nextLine();}
 	}
 }
 		
